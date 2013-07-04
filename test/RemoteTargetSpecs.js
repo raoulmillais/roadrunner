@@ -1,3 +1,7 @@
+/* global $ */
+/* global server */
+/* global config */
+/* global upload */
 var assert = require('assert');
 var RemoteTarget = require('../lib/remotetarget');
 
@@ -10,6 +14,23 @@ describe('RemoteTarget', function () {
 
 			assert.ok(target.opts);
 			assert.ok(target.rc);
+		});
+
+	});
+
+	describe('prepare and destroy', function () {
+
+		it('should add upload to the global', function () {
+			function fakeDispatcher(command, callback) {
+				callback();
+			}
+			var fakeConfig = { foo: 'bar', file: 'baz.zip' };
+			var target = new RemoteTarget({ server: 'foo.acme.com', config: fakeConfig });
+			target.dispatcher =  fakeDispatcher;
+			target.prepare();
+			upload(config.baz);
+			assert.equal(target.chains.length, 1);
+			target.destroy();
 		});
 
 	});
